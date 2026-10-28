@@ -1,0 +1,986 @@
+/* ==========================================================
+   2NF INTERACTIVE CHAPTER (TwoNFPage.css)
+   Yamraj's Court of Partial Dependencies
+   ========================================================== */
+
+.twonf-page {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #080614;
+  color: #f1f3ff;
+  font-family: var(--font-body);
+  overflow-x: hidden;
+}
+
+/* Courtroom Ambient Backdrop */
+.court-bg {
+  position: fixed;
+  inset: -20px;
+  background-size: cover;
+  background-position: center 35%;
+  background-repeat: no-repeat;
+  filter: contrast(1.1) brightness(0.85) saturate(1.15);
+  animation: courtDrift 30s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: 0;
+  will-change: transform;
+}
+
+@keyframes courtDrift {
+  0% { transform: scale(1) translate3d(0, 0, 0); }
+  50% { transform: scale(1.03) translate3d(-8px, -4px, 0); }
+  100% { transform: scale(1.05) translate3d(6px, -10px, 0); }
+}
+
+.court-vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  background:
+    radial-gradient(circle at 50% 40%, rgba(10, 8, 24, 0.2) 0%, rgba(8, 6, 20, 0.78) 70%, rgba(5, 4, 14, 0.96) 100%),
+    linear-gradient(180deg, rgba(8, 6, 20, 0.82) 0%, rgba(8, 6, 20, 0.3) 25%, rgba(8, 6, 20, 0.4) 65%, rgba(6, 4, 16, 0.92) 100%);
+  pointer-events: none;
+}
+
+.court-fog {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  background: radial-gradient(ellipse 900px 400px at 50% 90%, rgba(247, 197, 102, 0.12), transparent 70%);
+  mix-blend-mode: screen;
+  pointer-events: none;
+  animation: courtFogBreathe 6s ease-in-out infinite alternate;
+}
+
+@keyframes courtFogBreathe {
+  0% { opacity: 0.5; }
+  100% { opacity: 0.9; }
+}
+
+/* Staff Energy Shockwave */
+.staff-shockwave-ring {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 100px;
+  height: 100px;
+  margin-top: -50px;
+  margin-left: -50px;
+  border-radius: 50%;
+  border: 4px solid rgba(255, 215, 100, 0.9);
+  box-shadow:
+    0 0 40px rgba(255, 200, 80, 0.9),
+    inset 0 0 40px rgba(255, 200, 80, 0.9);
+  z-index: 99;
+  pointer-events: none;
+  animation: shockwaveExpand 1.6s cubic-bezier(0.1, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes shockwaveExpand {
+  0% {
+    transform: scale(0.2);
+    opacity: 1;
+  }
+  70% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(25);
+    opacity: 0;
+  }
+}
+
+/* ---------- Top Navigation ---------- */
+.twonf-nav {
+  position: sticky;
+  top: 0;
+  z-index: 25;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px clamp(16px, 3vw, 40px);
+  background: rgba(12, 10, 26, 0.76);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(247, 197, 102, 0.28);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(247, 197, 102, 0.1);
+}
+
+.twonf-nav__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn-chapter-jump {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gold-300);
+  background: rgba(247, 197, 102, 0.12);
+  border: 1px solid rgba(247, 197, 102, 0.35);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-chapter-jump:hover {
+  background: rgba(247, 197, 102, 0.25);
+  transform: translateX(-2px);
+}
+
+.court-status-tag {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 4px 12px;
+  border-radius: 99px;
+  color: #fff;
+  background: rgba(247, 197, 102, 0.18);
+  border: 1px solid rgba(247, 197, 102, 0.4);
+}
+
+/* ---------- Stepper ---------- */
+.twonf-stepper {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: rgba(10, 8, 22, 0.65);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  overflow-x: auto;
+}
+
+/* ---------- Main Stage ---------- */
+.twonf-stage {
+  position: relative;
+  z-index: 5;
+  flex: 1;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 24px clamp(16px, 3vw, 36px) 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Scene Views */
+.scene-view {
+  background: rgba(14, 11, 28, 0.82);
+  backdrop-filter: blur(24px);
+  border-radius: 20px;
+  border: 1px solid rgba(247, 197, 102, 0.3);
+  padding: clamp(20px, 3vw, 36px);
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.7),
+    0 0 35px rgba(247, 197, 102, 0.08),
+    inset 0 0 30px rgba(247, 197, 102, 0.04);
+  animation: sceneEntrance 0.5s ease-out both;
+}
+
+/* ---------- Scene 1: Court Hero Grid ---------- */
+.court-hero-grid {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 32px;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.court-art-showcase {
+  position: relative;
+}
+
+.court-art-frame {
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 2px solid rgba(247, 197, 102, 0.6);
+  box-shadow: 0 0 35px rgba(247, 197, 102, 0.35), 0 16px 36px rgba(0, 0, 0, 0.8);
+}
+
+.court-art-img {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  display: block;
+}
+
+.court-art-overlay {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+.golden-scales-badge {
+  display: inline-block;
+  padding: 5px 14px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #1a0f02;
+  background: linear-gradient(180deg, #ffe299, #f0b84c);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.court-welcome-panel h2 {
+  font-family: var(--font-display);
+  font-size: clamp(24px, 2.6vw, 36px);
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 12px;
+  text-shadow: 0 0 20px rgba(247, 197, 102, 0.4);
+}
+
+.court-welcome-panel p {
+  color: #cacedf;
+  font-size: clamp(13px, 1.1vw, 15px);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+/* Materialized Table Card */
+.table-materialize-box {
+  background: rgba(8, 6, 18, 0.85);
+  border-radius: 14px;
+  border: 1px solid rgba(247, 197, 102, 0.35);
+  padding: 18px;
+  box-shadow: inset 0 0 24px rgba(0, 0, 0, 0.6);
+}
+
+.table-header-callout {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12.5px;
+  color: #ffd98a;
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(247, 197, 102, 0.2);
+}
+
+.key-legend {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.key-dot.gold {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--gold-400);
+  box-shadow: 0 0 8px var(--gold-400);
+}
+
+/* Court Table Styles */
+.table-scroll-container {
+  overflow-x: auto;
+  border-radius: 10px;
+}
+
+.court-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 13.5px;
+}
+
+.court-table th {
+  padding: 12px 14px;
+  background: rgba(28, 20, 50, 0.85);
+  color: var(--gold-300);
+  font-weight: 700;
+  text-align: left;
+  border-bottom: 1px solid rgba(247, 197, 102, 0.3);
+}
+
+.court-table td {
+  padding: 12px 14px;
+  background: rgba(14, 11, 26, 0.65);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: #e4e7fb;
+}
+
+.th-key,
+.td-key {
+  color: #fff !important;
+  background: rgba(247, 197, 102, 0.15) !important;
+  border-inline: 1px solid rgba(247, 197, 102, 0.25);
+  box-shadow: inset 0 0 10px rgba(247, 197, 102, 0.1);
+}
+
+.tag-deed {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11.5px;
+  font-weight: 600;
+  background: rgba(255, 90, 40, 0.2);
+  color: #ff9b71;
+  border: 1px solid rgba(255, 90, 40, 0.35);
+}
+
+/* ---------- Scene 2: Dependency Ray Analysis ---------- */
+.dependency-workbench {
+  margin-top: 10px;
+}
+
+.dependency-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+  padding: 12px 18px;
+  border-radius: 12px;
+  background: rgba(20, 15, 38, 0.7);
+  border: 1px solid rgba(247, 197, 102, 0.2);
+}
+
+.dependency-formula {
+  font-size: 14px;
+}
+
+.table--dependency .is-beam-active {
+  transition: all 0.3s ease;
+}
+
+.is-beam-active .col-soulid {
+  background: rgba(255, 215, 100, 0.28) !important;
+  box-shadow: 0 0 20px rgba(255, 215, 100, 0.6);
+  border: 2px solid var(--gold-400);
+}
+
+.is-beam-active .col-dependent {
+  background: rgba(255, 80, 80, 0.25) !important;
+  border: 1.5px solid rgba(255, 80, 80, 0.6);
+  color: #fff;
+}
+
+.is-beam-active .is-dimmed {
+  opacity: 0.35;
+  filter: blur(0.5px);
+}
+
+.beam-origin-badge,
+.target-badge,
+.dimmed-badge,
+.full-badge {
+  display: block;
+  font-size: 9.5px;
+  font-weight: 600;
+  margin-top: 2px;
+  letter-spacing: 0.05em;
+}
+
+.beam-origin-badge { color: #ffe285; }
+.target-badge { color: #ff8585; }
+.dimmed-badge { color: #888; }
+.full-badge { color: #a4c9ff; }
+
+.alert-box--hazard {
+  display: flex;
+  gap: 14px;
+  margin-top: 20px;
+  padding: 16px 20px;
+  border-radius: 12px;
+  background: rgba(60, 12, 18, 0.85);
+  border: 1.5px solid rgba(255, 80, 60, 0.65);
+  box-shadow: 0 0 25px rgba(255, 60, 40, 0.35);
+  animation: hazardPulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes hazardPulse {
+  0% { box-shadow: 0 0 15px rgba(255, 60, 40, 0.25); }
+  100% { box-shadow: 0 0 30px rgba(255, 60, 40, 0.6); }
+}
+
+.alert-icon {
+  font-size: 26px;
+  color: #ff5e5e;
+}
+
+.alert-text h4 {
+  font-size: 15px;
+  color: #ff7777;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  margin-bottom: 4px;
+}
+
+.alert-text p {
+  font-size: 13px;
+  color: #ffd6d6;
+  line-height: 1.5;
+}
+
+/* ---------- Scene 3: Anomaly Simulator ---------- */
+.anomaly-tab-bar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.anomaly-tab {
+  flex: 1;
+  padding: 12px 18px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #b7bfe4;
+  background: rgba(22, 18, 42, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.anomaly-tab:hover {
+  background: rgba(247, 197, 102, 0.15);
+  color: #fff;
+}
+
+.anomaly-tab.is-active {
+  color: #fff;
+  background: linear-gradient(135deg, rgba(80, 20, 25, 0.8), rgba(40, 10, 15, 0.8));
+  border-color: rgba(255, 90, 70, 0.6);
+  box-shadow: 0 4px 18px rgba(255, 70, 50, 0.35);
+}
+
+.anomaly-showcase {
+  background: rgba(10, 8, 20, 0.7);
+  border-radius: 14px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.anomaly-explainer {
+  font-size: 13.5px;
+  color: #d1d5eb;
+  margin-bottom: 18px;
+}
+
+.row-disintegrated {
+  animation: disintegrateAsh 1s forwards;
+}
+
+@keyframes disintegrateAsh {
+  0% {
+    filter: blur(0px) brightness(1.5);
+    background: rgba(255, 120, 40, 0.4);
+  }
+  100% {
+    filter: blur(2px) grayscale(1);
+    opacity: 0.3;
+    background: rgba(50, 20, 20, 0.4);
+  }
+}
+
+.anomaly-alert-card {
+  margin-top: 18px;
+  padding: 16px 20px;
+  border-radius: 12px;
+}
+
+.danger-card {
+  background: rgba(70, 15, 20, 0.85);
+  border: 1.5px solid rgba(255, 80, 60, 0.7);
+  box-shadow: 0 0 25px rgba(255, 60, 40, 0.4);
+}
+
+.error-card {
+  background: rgba(60, 20, 10, 0.85);
+  border: 1.5px solid rgba(255, 140, 40, 0.7);
+  box-shadow: 0 0 25px rgba(255, 120, 30, 0.4);
+}
+
+.anomaly-alert-card h4 {
+  font-size: 14.5px;
+  font-weight: 800;
+  margin-bottom: 6px;
+  color: #ff9b9b;
+}
+
+.query-box {
+  background: #05040a;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  margin-bottom: 14px;
+  font-family: monospace;
+  font-size: 13px;
+  color: #6ce5e8;
+}
+
+.simulator-actions {
+  display: flex;
+  gap: 12px;
+}
+
+/* ---------- Scene 4: Tablet Split ---------- */
+.floating-table-stage {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.stone-tablet {
+  background: linear-gradient(145deg, rgba(28, 22, 54, 0.9), rgba(16, 12, 34, 0.9));
+  border-radius: 16px;
+  border: 2px solid rgba(247, 197, 102, 0.45);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65), 0 0 24px rgba(247, 197, 102, 0.15);
+  padding: 18px;
+  animation: tabletFloat 5s ease-in-out infinite alternate;
+}
+
+@keyframes tabletFloat {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-8px); }
+}
+
+.tablet-deed {
+  animation-delay: -2.5s;
+}
+
+.tablet-header {
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(247, 197, 102, 0.25);
+}
+
+.tablet-tag {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: var(--gold-400);
+}
+
+.tablet-header h3 {
+  font-size: 16px;
+  color: #fff;
+  font-weight: 700;
+  margin: 2px 0;
+}
+
+.tablet-pk {
+  font-size: 11px;
+  color: #a8b2df;
+}
+
+.fk-connection-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 0 10px;
+}
+
+.fk-thread {
+  width: 100%;
+  min-width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, #ffd764, #ff8c2b);
+  box-shadow: 0 0 12px #ffd764;
+  position: relative;
+  animation: fkGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes fkGlow {
+  0% { filter: brightness(1) drop-shadow(0 0 4px #ffd764); }
+  100% { filter: brightness(1.4) drop-shadow(0 0 12px #ff8c2b); }
+}
+
+.fk-badge {
+  font-size: 10px;
+  font-weight: 800;
+  color: #1a0f02;
+  background: linear-gradient(180deg, #ffe285, #f0b84c);
+  padding: 3px 10px;
+  border-radius: 99px;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.resolution-seal-card {
+  text-align: center;
+  padding: 24px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(247, 197, 102, 0.14), rgba(247, 197, 102, 0.04));
+  border: 1.5px solid rgba(247, 197, 102, 0.4);
+  box-shadow: 0 0 35px rgba(247, 197, 102, 0.2);
+}
+
+.seal-badge {
+  display: inline-block;
+  padding: 6px 18px;
+  border-radius: 99px;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #241401;
+  background: linear-gradient(180deg, #fff3cf, #f2a51f);
+  box-shadow: 0 0 20px rgba(242, 165, 31, 0.6);
+  margin-bottom: 10px;
+}
+
+.resolution-seal-card h3 {
+  font-size: 18px;
+  color: #fff;
+  margin-bottom: 6px;
+}
+
+.resolution-seal-card p {
+  font-size: 13.5px;
+  color: #d1d6ef;
+}
+
+/* ---------- Scene 5: Audience Judge Challenge ---------- */
+.attribute-pool {
+  background: rgba(12, 9, 24, 0.8);
+  border-radius: 14px;
+  padding: 16px 20px;
+  border: 1px solid rgba(247, 197, 102, 0.25);
+  margin-bottom: 24px;
+}
+
+.pool-title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold-400);
+  margin-bottom: 10px;
+}
+
+.pool-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.attr-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #f1f3ff;
+  background: rgba(30, 24, 56, 0.85);
+  border: 1.5px solid rgba(247, 197, 102, 0.4);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.attr-chip:hover:not(:disabled) {
+  transform: translateY(-2px);
+  background: rgba(247, 197, 102, 0.2);
+  border-color: var(--gold-400);
+}
+
+.attr-chip.is-selected {
+  background: linear-gradient(180deg, #ffe285, #f0b84c);
+  color: #1a0f02;
+  box-shadow: 0 0 20px rgba(247, 197, 102, 0.8);
+  transform: scale(1.05);
+}
+
+.attr-chip.is-assigned {
+  opacity: 0.4;
+  border-color: rgba(47, 217, 138, 0.4);
+  color: #9effcf;
+  cursor: default;
+}
+
+.selected-hint {
+  margin-top: 10px;
+  font-size: 12.5px;
+  color: var(--gold-300);
+  animation: pulseHint 1.5s infinite alternate;
+}
+
+@keyframes pulseHint {
+  from { opacity: 0.7; }
+  to { opacity: 1; }
+}
+
+.judge-drop-arena {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.drop-table-target {
+  background: rgba(16, 12, 32, 0.75);
+  border-radius: 16px;
+  border: 2px dashed rgba(247, 197, 102, 0.35);
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.drop-table-target.is-listening {
+  border-color: var(--gold-400);
+  background: rgba(247, 197, 102, 0.08);
+  box-shadow: 0 0 25px rgba(247, 197, 102, 0.25);
+}
+
+.drop-table-target:hover {
+  border-color: var(--gold-400);
+  background: rgba(247, 197, 102, 0.12);
+}
+
+.target-head h4 {
+  font-size: 16px;
+  color: #fff;
+  font-weight: 800;
+}
+
+.target-head span {
+  font-size: 11.5px;
+  color: #a8b2df;
+}
+
+.target-slots {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.slot-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: rgba(8, 6, 18, 0.6);
+  border-radius: 8px;
+  font-size: 12.5px;
+}
+
+.slot-label {
+  color: #cacedf;
+}
+
+.placed-pill {
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #0b2214;
+  background: #39e58c;
+  box-shadow: 0 0 10px rgba(57, 229, 140, 0.5);
+}
+
+.empty-pill {
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  color: #767a96;
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+}
+
+.judge-victory-banner {
+  text-align: center;
+  padding: 26px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(57, 229, 140, 0.18), rgba(57, 229, 140, 0.05));
+  border: 2px solid #39e58c;
+  box-shadow: 0 0 40px rgba(57, 229, 140, 0.35);
+  animation: victoryPop 0.5s ease-out both;
+}
+
+@keyframes victoryPop {
+  0% { transform: scale(0.92); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.victory-icon {
+  font-size: 38px;
+  margin-bottom: 6px;
+}
+
+.judge-victory-banner h3 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  color: #39e58c;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+}
+
+.judge-victory-banner p {
+  font-size: 14px;
+  color: #e4e7fb;
+  max-width: 600px;
+  margin: 0 auto 16px;
+}
+
+.victory-actions {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+}
+
+/* ---------- Scene 6: Transition to 3NF ---------- */
+.transition-preview-grid {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 28px;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.bhrigu-card {
+  border-radius: 16px;
+  overflow: hidden;
+  border: 2px solid rgba(247, 197, 102, 0.5);
+  box-shadow: 0 0 35px rgba(247, 197, 102, 0.25);
+  background: rgba(14, 11, 28, 0.85);
+}
+
+.bhrigu-img-wrap {
+  height: 220px;
+  overflow: hidden;
+}
+
+.bhrigu-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 30%;
+}
+
+.bhrigu-info {
+  padding: 14px;
+  text-align: center;
+}
+
+.guide-tag {
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--gold-400);
+}
+
+.bhrigu-info h3 {
+  font-size: 18px;
+  color: #fff;
+  margin: 2px 0 6px;
+}
+
+.bhrigu-info p {
+  font-size: 12px;
+  color: #cfd4f2;
+  font-style: italic;
+}
+
+.transitive-preview-panel {
+  background: rgba(10, 8, 20, 0.7);
+  padding: 20px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.transitive-preview-panel h4 {
+  font-size: 16px;
+  color: var(--gold-300);
+  margin-bottom: 4px;
+}
+
+.transitive-preview-panel p {
+  font-size: 13px;
+  color: #cacedf;
+  margin-bottom: 14px;
+}
+
+.realm-tag {
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  background: rgba(163, 92, 255, 0.2);
+  color: #d1a8ff;
+  border: 1px solid rgba(163, 92, 255, 0.4);
+}
+
+.transitive-chain {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 18px;
+  padding: 12px;
+  border-radius: 10px;
+  background: rgba(5, 4, 12, 0.6);
+  border: 1px solid rgba(247, 197, 102, 0.2);
+}
+
+.chain-node {
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  background: rgba(28, 22, 54, 0.9);
+  border: 1px solid rgba(247, 197, 102, 0.4);
+}
+
+.chain-node.node--hazard {
+  background: rgba(70, 20, 30, 0.9);
+  border-color: rgba(255, 80, 80, 0.7);
+  color: #ff9d9d;
+  box-shadow: 0 0 14px rgba(255, 80, 80, 0.4);
+}
+
+.chain-arrow {
+  color: var(--gold-400);
+  font-weight: 800;
+}
+
+/* ---------- Footer Controls ---------- */
+.twonf-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  border-radius: 14px;
+  background: rgba(10, 8, 22, 0.85);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(247, 197, 102, 0.25);
+}
+
+.footer-scene-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffd98a;
+  text-align: center;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 860px) {
+  .court-hero-grid,
+  .floating-table-stage,
+  .judge-drop-arena,
+  .transition-preview-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .court-art-img {
+    height: 200px;
+  }
+}
