@@ -19,9 +19,10 @@ import './BCNFPage.css'
 interface BCNFPageProps {
   onBackToHome: () => void
   onOpen3NF?: () => void
+  onOpen4NF?: () => void
 }
 
-export default function BCNFPage({ onBackToHome, onOpen3NF }: BCNFPageProps) {
+export default function BCNFPage({ onBackToHome, onOpen3NF, onOpen4NF }: BCNFPageProps) {
   const [currentScene, setCurrentScene] = useState<BCNFSceneNumber>(1)
 
   // Scene 1: Divine gossip bubbles
@@ -149,6 +150,16 @@ export default function BCNFPage({ onBackToHome, onOpen3NF }: BCNFPageProps) {
               title="Review Chapter 3"
             >
               ← 3NF Observatory
+            </button>
+          )}
+          {onOpen4NF && (
+            <button
+              type="button"
+              className="btn-chapter-jump"
+              onClick={onOpen4NF}
+              title="Enter Chapter 5"
+            >
+              4NF Library →
             </button>
           )}
           <span className="bcnf-status-tag">🪕 BCNF Chamber</span>
@@ -887,11 +898,20 @@ export default function BCNFPage({ onBackToHome, onOpen3NF }: BCNFPageProps) {
             <div className="scene-actions text-center">
               <button
                 type="button"
-                className="btn btn--gold btn--lg"
+                className="btn btn--outline btn--lg"
                 onClick={onBackToHome}
               >
                 Return to Yamaloka Normalization Journey 🌟
               </button>
+              {onOpen4NF && (
+                <button
+                  type="button"
+                  className="btn btn--gold btn--lg"
+                  onClick={onOpen4NF}
+                >
+                  Enter Sage Vyasa's 4NF Chamber 📜 →
+                </button>
+              )}
             </div>
           </section>
         )}

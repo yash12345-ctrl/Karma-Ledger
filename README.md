@@ -94,6 +94,20 @@ flowchart LR
 
 ---
 
+### 5️⃣ Chapter 5: Sage Vyasa & Infinite Combinations (4NF)
+> *"Fourth Normal Form: No table shall contain two or more independent multivalued facts!"*
+
+- **The Crisis:** In `TABLE C (SoulID, Language, Skill)`, a soul's languages and skills are completely independent multivalued dependencies (`SoulID ↠ Language` and `SoulID ↠ Skill`).
+- **The Combinatorial Explosion:** Storing independent attributes together forces a massive Cartesian cross-product (`3 languages × 4 skills = 12 rows`). Adding 1 language forces multiple duplicate rows!
+- **The Transformation:** Sage Vyasa raises his sacred manuscript, dissolving the cross-product links into golden particles and cleaving the table into:
+  - `SOUL_LANGUAGE` (`SoulID` 🔑, `Language` 🔑) — 3 rows
+  - `SOUL_SKILL` (`SoulID` 🔑, `Skill` 🔑) — 4 rows
+  - Storing 3 + 4 = 7 rows instead of 12 rows!
+- **Interactive Sages Challenge:** Drag and sort unassigned languages and skills into their independent relation tables.
+- **The Grand Finale Ceremony:** Chitragupta's sacred scroll transforms into a radiant golden ledger, celebrating all 5 Normal Forms completed!
+
+---
+
 ## ✨ Design & Visual Excellence
 
 - **Cosmic Celestial Aesthetic:** Designed with deep twilight palettes (`#050716`), gilded accents (`#f7c566`), breathing nebulae, and armillary rings.
@@ -126,7 +140,7 @@ yamraj_website/
 │   │   ├── 2nf.jpg             # Lord Yamraj & Staff
 │   │   ├── 3nf.jpg             # Sage Bhrigu's Observatory
 │   │   ├── bcnf.jpg            # Sage Narada & Veena
-│   │   └── 4nf.jpg             # Sage Vyasa Preview
+│   │   └── 4nf.jpg             # Sage Vyasa Library
 │   ├── components/             # Modular interactive page components
 │   │   ├── Intro.tsx           # Cinematic cold-open introduction
 │   │   ├── Navbar.tsx          # Sticky glassmorphic navigation bar
@@ -136,13 +150,15 @@ yamraj_website/
 │   │   ├── TwoNFPage.tsx       # 2NF court & table splitting simulator
 │   │   ├── ThreeNFPage.tsx     # 3NF observatory & transitive ray tracer
 │   │   ├── BCNFPage.tsx        # BCNF courtroom & balance scale quiz
+│   │   ├── FourNFPage.tsx      # 4NF library & cross-product separation
 │   │   └── Icons.tsx           # Custom SVGs (Scroll, Scale, Staff, Veena)
 │   ├── data/                   # Data layers and simulation models
 │   │   ├── journey.ts          # Normalization roadmap metadata
 │   │   ├── oneNFData.ts        # 1NF table rows & challenge cards
 │   │   ├── twoNFData.ts        # 2NF partial dependency records
 │   │   ├── threeNFData.ts      # 3NF transitive dependency records
-│   │   └── bcnfData.ts         # BCNF court assignments & anomaly records
+│   │   ├── bcnfData.ts         # BCNF court assignments & anomaly records
+│   │   └── fourNFData.ts       # 4NF multi-valued dependency models
 │   ├── utils/
 │   │   └── soundEffects.ts     # Web Audio API divine sound synthesizers
 │   ├── App.tsx                 # Route coordinator & hash listener

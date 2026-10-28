@@ -9,13 +9,14 @@ import OneNFPage from './components/OneNFPage'
 import TwoNFPage from './components/TwoNFPage'
 import ThreeNFPage from './components/ThreeNFPage'
 import BCNFPage from './components/BCNFPage'
+import FourNFPage from './components/FourNFPage'
 
 export default function App() {
   // The cinematic intro plays first; the home page mounts underneath at the
   // moment the golden exit flash begins, then the intro unmounts.
   const [showIntro, setShowIntro] = useState(true)
   const [showHome, setShowHome] = useState(false)
-  const [activeView, setActiveView] = useState<'home' | '1nf' | '2nf' | '3nf' | 'bcnf'>('home')
+  const [activeView, setActiveView] = useState<'home' | '1nf' | '2nf' | '3nf' | 'bcnf' | '4nf'>('home')
 
   const reveal = useCallback(() => setShowHome(true), [])
   const done = useCallback(() => setShowIntro(false), [])
@@ -40,15 +41,22 @@ export default function App() {
     setActiveView('bcnf')
   }, [])
 
+  const handleOpen4NF = useCallback(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+    setActiveView('4nf')
+  }, [])
+
   const handleBackToHome = useCallback(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
     setActiveView('home')
   }, [])
 
-  // Listen to hash changes (e.g. #1nf, #2nf, #3nf, #bcnf)
+  // Listen to hash changes (e.g. #1nf, #2nf, #3nf, #bcnf, #4nf)
   useEffect(() => {
     const checkHash = () => {
-      if (window.location.hash === '#bcnf') {
+      if (window.location.hash === '#4nf') {
+        setActiveView('4nf')
+      } else if (window.location.hash === '#bcnf') {
         setActiveView('bcnf')
       } else if (window.location.hash === '#3nf') {
         setActiveView('3nf')
@@ -83,6 +91,12 @@ export default function App() {
         <BCNFPage
           onBackToHome={handleBackToHome}
           onOpen3NF={handleOpen3NF}
+          onOpen4NF={handleOpen4NF}
+        />
+      ) : activeView === '4nf' ? (
+        <FourNFPage
+          onBackToHome={handleBackToHome}
+          onOpenBCNF={handleOpenBCNF}
         />
       ) : (
         showHome && (
@@ -96,6 +110,7 @@ export default function App() {
                   onSelect2NF={handleOpen2NF}
                   onSelect3NF={handleOpen3NF}
                   onSelectBCNF={handleOpenBCNF}
+                  onSelect4NF={handleOpen4NF}
                 />
                 <CtaCards />
               </div>

@@ -26,9 +26,16 @@ interface JourneyProps {
   onSelect2NF?: () => void
   onSelect3NF?: () => void
   onSelectBCNF?: () => void
+  onSelect4NF?: () => void
 }
 
-export default function Journey({ onSelect1NF, onSelect2NF, onSelect3NF, onSelectBCNF }: JourneyProps) {
+export default function Journey({
+  onSelect1NF,
+  onSelect2NF,
+  onSelect3NF,
+  onSelectBCNF,
+  onSelect4NF,
+}: JourneyProps) {
   return (
     <section className="journey" id="journey" aria-labelledby="journey-title">
       <div className="journey__head">
@@ -44,7 +51,8 @@ export default function Journey({ onSelect1NF, onSelect2NF, onSelect3NF, onSelec
             (step.id === '1nf' && onSelect1NF) ||
             (step.id === '2nf' && onSelect2NF) ||
             (step.id === '3nf' && onSelect3NF) ||
-            (step.id === 'bcnf' && onSelectBCNF)
+            (step.id === 'bcnf' && onSelectBCNF) ||
+            (step.id === '4nf' && onSelect4NF)
           const handleClick =
             step.id === '1nf'
               ? onSelect1NF
@@ -54,7 +62,9 @@ export default function Journey({ onSelect1NF, onSelect2NF, onSelect3NF, onSelec
                   ? onSelect3NF
                   : step.id === 'bcnf'
                     ? onSelectBCNF
-                    : undefined
+                    : step.id === '4nf'
+                      ? onSelect4NF
+                      : undefined
 
           return (
             <Fragment key={step.id}>
@@ -100,6 +110,11 @@ export default function Journey({ onSelect1NF, onSelect2NF, onSelect3NF, onSelec
                         <span>🪕 PLAY BCNF CHAPTER</span>
                       </div>
                     )}
+                    {step.id === '4nf' && (
+                      <div className="nf-card__play-badge">
+                        <span>📜 PLAY 4NF CHAPTER</span>
+                      </div>
+                    )}
                     {step.chips && (
                       <div className={`chips chips--${step.chipLayout}`}>
                         {step.chips.map((c, ci) => (
@@ -136,6 +151,11 @@ export default function Journey({ onSelect1NF, onSelect2NF, onSelect3NF, onSelec
                   {step.id === 'bcnf' && (
                     <div className="nf-card__cta-btn">
                       <span>Enter Sage Narada's Court →</span>
+                    </div>
+                  )}
+                  {step.id === '4nf' && (
+                    <div className="nf-card__cta-btn">
+                      <span>Enter Sage Vyasa's Library →</span>
                     </div>
                   )}
                 </article>
